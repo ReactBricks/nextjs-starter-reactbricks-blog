@@ -1,11 +1,5 @@
 import { useContext } from 'react'
-import {
-  ReactBricksContext,
-  PageViewer,
-  fetchPage,
-  cleanPage,
-  types,
-} from 'react-bricks/frontend'
+import { ReactBricksContext, PageViewer, fetchPage, cleanPage, types, fetchPages } from 'react-bricks/frontend'
 import Head from 'next/head'
 import { GetStaticProps } from 'next'
 
@@ -17,9 +11,10 @@ import ErrorNoHomePage from '../components/errorNoHomePage'
 interface HomeProps {
   page: types.Page
   error: string
+  posts: types.Page[]
 }
 
-const Home: React.FC<HomeProps> = ({ page, error }) => {
+const Home: React.FC<HomeProps> = ({ posts, page, error }) => {
   // Clean the received content
   // Removes unknown or not allowed bricks
   const { pageTypes, bricks } = useContext(ReactBricksContext)
@@ -37,6 +32,7 @@ const Home: React.FC<HomeProps> = ({ page, error }) => {
           <PageViewer page={pageOk} />
         </>
       )}
+
       {error === 'NOKEYS' && <ErrorNoKeys />}
       {error === 'NOPAGE' && <ErrorNoHomePage />}
     </Layout>
@@ -48,8 +44,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
     return { props: { error: 'NOKEYS' } }
   }
   try {
+    const posts = await fetchPages(process.env.API_KEY, { type: 'blog' })
     const page = await fetchPage('home', config.apiKey, context.locale)
-    return { props: { page } }
+    return { props: { page, posts } }
   } catch {
     return { props: { error: 'NOPAGE' } }
   }

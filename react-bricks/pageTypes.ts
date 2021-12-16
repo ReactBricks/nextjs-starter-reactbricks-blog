@@ -8,6 +8,12 @@ const pageTypes: types.IPageType[] = [
     defaultStatus: types.PageStatus.Published,
     getDefaultContent: () => [],
   },
+  {
+    name: 'blog',
+    pluralName: 'Blog',
+    getDefaultContent: () => [],
+    allowedBlockTypes: ['title', 'paragraph', 'video', 'image', 'quote', 'social-embed', 'code-block', 'twitter-light'],
+  },
 ]
 
 export default pageTypes
