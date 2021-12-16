@@ -10,6 +10,10 @@ module.exports = {
   ],
   darkMode: 'class',
   theme: {
+    flex: {
+      '1': '1 1 0%',
+      '2': '2 2 0%',
+    },
     extend: {
       colors: {
         azure: colors.sky,
