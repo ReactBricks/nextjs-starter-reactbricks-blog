@@ -48,6 +48,11 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: {
+    extend: {
+      margin: ['group-hover'],
+      opacity: ['group-hover'],
+    },
+  },
   plugins: [],
 }
