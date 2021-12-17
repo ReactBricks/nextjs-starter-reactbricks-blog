@@ -17,7 +17,7 @@ interface HomeProps {
 }
 
 const BlogList: React.FC<HomeProps> = ({ posts, page, error }) => {
-  const tags = posts.reduce((acc, post) => {
+  const tags = posts?.reduce((acc, post) => {
     post.tags.forEach((tag) => {
       if (!acc.find((accTag) => accTag === tag)) {
         acc.push(tag)
@@ -41,15 +41,18 @@ const BlogList: React.FC<HomeProps> = ({ posts, page, error }) => {
             <title>{page.meta.title}</title>
             <meta name="description" content={page.meta.description} />
           </Head>
-
-          <PageViewer page={pageOk} />
         </>
       )}
+      <h1 className="text-center text-4xl sm:text-6xl lg:text-7xl leading-none font-black tracking-tight text-gray-900 pb-4 mt-10 sm:mt-12 mb-4">
+        <span className="text-transparent bg-clip-text decoration-clone px-2 bg-gradient-to-r from-red-400 to-pink-700">
+          Blog
+        </span>
+      </h1>
       <div className="max-w-6xl mx-auto px-8 pt-16 flex space-x-24">
         <section className="flex-2 space-y-8">
           <h2 className="text-pink-500 capitalize text-xl mb-8">Heading</h2>
           {posts
-            .filter((post) => post.tags.find((tag) => (typeof filter === 'boolean' ? filter : tag === filter)))
+            ?.filter((post) => post.tags.find((tag) => (typeof filter === 'boolean' ? filter : tag === filter)))
             .map((post) => (
               <BlogListItem key={post.id} title={post.name} href={post.slug} content={post.meta.description} />
             ))}
@@ -60,7 +63,7 @@ const BlogList: React.FC<HomeProps> = ({ posts, page, error }) => {
             <div className="flex flex-wrap space-x-4">
               {/* T A G  */}
               {tags
-                .filter((tag) => tag !== 'popoular')
+                ?.filter((tag) => tag !== 'popoular')
                 .map((tag) => (
                   <div
                     key={tag}
@@ -74,17 +77,16 @@ const BlogList: React.FC<HomeProps> = ({ posts, page, error }) => {
                     {tag}
                   </div>
                 ))}
+              <div
+                className="text-md font-bold relative isolate rounded-xl px-2 py-1 group cursor-pointer flex justify-center mb-2"
+                onClick={() => setFilter(true)}
+              >
                 <div
-
-                    className="text-md font-bold relative isolate rounded-xl px-2 py-1 group cursor-pointer flex justify-center mb-2"
-                    onClick={() => setFilter(true)}
-                  >
-                    <div
-                      className="transform duration-200 group-hover:scale-105 absolute inset-0 bg-purple-400 group-hover:bg-purple-300 rounded-xl px-2 py-1 border border-solid border-purple-500"
-                      style={{ zIndex: -1 }}
-                    />
-                    Reset tags
-                  </div>
+                  className="transform duration-200 group-hover:scale-105 absolute inset-0 bg-purple-400 group-hover:bg-purple-300 rounded-xl px-2 py-1 border border-solid border-purple-500"
+                  style={{ zIndex: -1 }}
+                />
+                Reset tags
+              </div>
               {/*  */}
             </div>
           </div>
@@ -92,7 +94,7 @@ const BlogList: React.FC<HomeProps> = ({ posts, page, error }) => {
             <h2 className="text-pink-500 capitalize text-xl mb-8">Most Popoular</h2>
             <ul>
               {posts
-                .filter((post) => post.tags.find((tag) => tag === 'popoular'))
+                ?.filter((post) => post.tags.find((tag) => tag === 'popoular'))
                 .map((post) => (
                   <li key={post.id} className="">
                     <a href={post.slug} className="flex space-x-2 items-center group py-2 cursor-pointer">

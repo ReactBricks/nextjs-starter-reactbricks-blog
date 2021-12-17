@@ -15,14 +15,11 @@ interface ArticleCardProps {
 
 const ArticleCard: React.FC<ArticleCardProps> = ({ href, title, description, date, image }) => {
   return (
-    <article className="w-1/2 mb-8 p-8">
+    <article className="w-1/2 mb-8 p-8 group cursor-pointer">
       <Link href={href}>
-        <a className="block relative group h-60">
-          <img
-            src={image}
-            className="block w-full h-60 object-cover object-center rounded transform group-hover:scale-x-150 transition-transform"
-          />
-          <div className="absolute top-0 bottom-0 left-0 right-0 bg-cyan-500 opacity-0 group-hover:opacity-40 transition-opacity"></div>
+        <a className="block relative h-60 transform duration-300 scale-100 group-hover:scale-105 rounded">
+          <img src={image} className="block w-full h-60 object-cover object-center transition-transform rounded" />
+          <div className="absolute top-0 bottom-0 left-0 right-0 bg-cyan-500 opacity-0 group-hover:opacity-40 transition-opacity rounded"></div>
         </a>
       </Link>
       <div className="my-4 text-xs uppercase text-gray-500">
