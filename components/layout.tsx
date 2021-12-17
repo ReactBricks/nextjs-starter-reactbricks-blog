@@ -7,7 +7,7 @@ const Layout: React.FC = ({ children }) => {
   return (
     <div className="flex flex-col h-screen justify-between font-content antialiased">
       <Header />
-      <main className="mb-auto">{children}</main>
+      <main className="isolate mb-auto">{children}</main>
       <Footer />
     </div>
   )
