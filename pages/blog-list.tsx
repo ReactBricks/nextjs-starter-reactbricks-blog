@@ -24,7 +24,7 @@ interface HomeProps {
 }
 
 const BlogList: React.FC<HomeProps> = ({ posts, page, error }) => {
-  const tags = posts.reduce((acc, post) => {
+  const tags = posts?.reduce((acc, post) => {
     post.tags.forEach((tag) => {
       if (!acc.find((accTag) => accTag === tag)) {
         acc.push(tag)
@@ -48,17 +48,18 @@ const BlogList: React.FC<HomeProps> = ({ posts, page, error }) => {
             <title>{page.meta.title}</title>
             <meta name="description" content={page.meta.description} />
           </Head>
-
-          <PageViewer page={pageOk} />
         </>
       )}
-      <div className="max-w-6xl mx-auto px-8 py-16 flex space-x-24">
+      <h1 className="text-center text-4xl sm:text-6xl lg:text-7xl leading-none font-black tracking-tight text-gray-900 pb-4 mt-10 sm:mt-12 mb-4">
+        <span className="text-transparent bg-clip-text decoration-clone px-2 bg-gradient-to-r from-red-400 to-pink-700">
+          Blog
+        </span>
+      </h1>
+      <div className="max-w-6xl mx-auto px-8 pt-16 flex space-x-24">
         <section className="flex-2 space-y-8">
           <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">Heading</h2>
           {posts
-            .filter((post) =>
-              post.tags.find((tag) => (typeof filter === 'boolean' ? filter : tag === filter))
-            )
+            ?.filter((post) => post.tags.find((tag) => (typeof filter === 'boolean' ? filter : tag === filter)))
             .map((post) => (
               <BlogListItem
                 key={post.id}
@@ -74,7 +75,7 @@ const BlogList: React.FC<HomeProps> = ({ posts, page, error }) => {
             <div className="flex flex-wrap items-center">
               {/* T A G  */}
               {tags
-                .filter((tag) => tag !== 'popoular')
+                ?.filter((tag) => tag !== 'popoular')
                 .map((tag) => (
                   <div
                     key={tag}
@@ -105,7 +106,7 @@ const BlogList: React.FC<HomeProps> = ({ posts, page, error }) => {
             <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">Most Popoular</h2>
             <ul>
               {posts
-                .filter((post) => post.tags.find((tag) => tag === 'popoular'))
+                ?.filter((post) => post.tags.find((tag) => tag === 'popoular'))
                 .map((post) => (
                   <li key={post.id} className="">
                     <a
