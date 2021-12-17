@@ -6,13 +6,15 @@ const Header: React.FC = () => (
     <div className="max-w-5xl mx-auto px-6">
       <div className="w-full flex flex-col sm:flex-row justify-center sm:justify-between items-center">
         <div className="flex flex-col sm:flex-row items-center mb-4 sm:mb-0">
-          <img src="/react-bricks-logo.svg" className="w-48" alt="React Bricks" />
+          <a href="/">
+            <img src="/react-bricks-logo.svg" className="w-48" alt="React Bricks" />
+          </a>
           <div className="sm:ml-8 flex space-x-5 text-center">
-            <Link href="/blog-list">
-              <a className="text-gray-500 hover:text-pink-700">Blog List</a>
+            <Link href="/about-us">
+              <a className="text-gray-500 hover:text-pink-700">About us</a>
             </Link>
-            <Link href="/blog-list-thumbnail">
-              <a className="text-gray-500 hover:text-pink-700">Blog List T</a>
+            <Link href="/blogListThumbnail">
+              <a className="text-gray-500 hover:text-pink-700">Thumbnails</a>
             </Link>
           </div>
         </div>

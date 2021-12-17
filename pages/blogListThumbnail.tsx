@@ -3,14 +3,7 @@ import React from 'react'
 import PostThumbnail from '../components/PostThumbnail'
 
 import { useContext } from 'react'
-import {
-  ReactBricksContext,
-  PageViewer,
-  fetchPage,
-  cleanPage,
-  types,
-  fetchPages,
-} from 'react-bricks/frontend'
+import { ReactBricksContext, PageViewer, fetchPage, cleanPage, types, fetchPages } from 'react-bricks/frontend'
 import Head from 'next/head'
 import { GetStaticProps } from 'next'
 
@@ -21,38 +14,24 @@ import ErrorNoHomePage from '../components/errorNoHomePage'
 import dayjs from 'dayjs'
 
 interface BlogListThumbnailsProps {
-  page: types.Page
   error: string
   posts: types.Page[]
 }
 
-const BlogListThumbnails: React.FC<BlogListThumbnailsProps> = ({ posts, page, error }) => {
-  // Clean the received content
-  // Removes unknown or not allowed bricks
-  const { pageTypes, bricks } = useContext(ReactBricksContext)
-
-  const pageOk = page ? cleanPage(page, pageTypes, bricks) : null
-
+const BlogListThumbnails: React.FC<BlogListThumbnailsProps> = ({ posts, error }) => {
   return (
     <Layout>
-      {pageOk && (
-        <>
-          <Head>
-            <title>{page.meta.title}</title>
-            <meta name="description" content={page.meta.description} />
-          </Head>
-          <PageViewer page={pageOk} />
-        </>
-      )}
+      <Head>
+        <title>Blog List Thumbnails</title>
+        <meta name="description" content="React Bricks blog starter" />
+      </Head>
 
       <div className="container max-w-5xl mx-auto py-16 px-6">
         <h1 className="text-center text-4xl sm:text-6xl lg:text-7xl leading-none font-black tracking-tight text-gray-900 pb-4 mt-10 sm:mt-12 mb-4">
-          <span className="text-transparent bg-clip-text decoration-clone px-2 bg-gradient-to-r from-red-400 to-pink-700">
-            Blog
-          </span>
+          Blog
         </h1>
         <div className="py-10 flex flex-wrap">
-          {posts.map((post) => (
+          {posts?.map((post) => (
             <PostThumbnail
               href={post.slug}
               title={post.name}
@@ -68,21 +47,19 @@ const BlogListThumbnails: React.FC<BlogListThumbnailsProps> = ({ posts, page, er
       </div>
 
       {error === 'NOKEYS' && <ErrorNoKeys />}
-      {error === 'NOPAGE' && <ErrorNoHomePage />}
     </Layout>
   )
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async () => {
   if (!config.apiKey) {
     return { props: { error: 'NOKEYS' } }
   }
   try {
     const posts = await fetchPages(process.env.API_KEY, { type: 'blog' })
-    const page = await fetchPage('blog-list-thumbnail', config.apiKey, context.locale)
-    return { props: { page, posts } }
+    return { props: { posts } }
   } catch {
-    return { props: { error: 'NOPAGE' } }
+    return { props: {} }
   }
 }
 

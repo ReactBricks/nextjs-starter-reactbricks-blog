@@ -1,8 +1,9 @@
-import { GetStaticPaths, GetStaticProps } from 'next'
-import Head from 'next/head'
-import { fetchPages, types } from 'react-bricks/frontend'
-import { FaArrowRight } from 'react-icons/fa'
 import classNames from 'classnames'
+import { GetStaticPaths, GetStaticProps } from 'next'
+import Axios from 'axios'
+import Head from 'next/head'
+import Link from 'next/link'
+import { fetchPages, types } from 'react-bricks/frontend'
 import BlogListItem from '../../components/BlogListItem'
 import ErrorNoPage from '../../components/errorNoPage'
 import Layout from '../../components/layout'
@@ -10,20 +11,13 @@ import config from '../../react-bricks/config'
 
 interface PageProps {
   pages: types.Page[]
+  populars: types.Page[]
   error: string
   externalTag: string
+  allTags: string[]
 }
 
-const Page: React.FC<PageProps> = ({ externalTag, pages, error }) => {
-  const tags = pages?.reduce((acc, post) => {
-    post.tags.forEach((tag) => {
-      if (!acc.find((accTag) => accTag === tag)) {
-        acc.push(tag)
-      }
-    })
-    return acc
-  }, [])
-
+const Page: React.FC<PageProps> = ({ externalTag, pages, populars, allTags, error }) => {
   return (
     <Layout>
       <Head>
@@ -31,11 +25,9 @@ const Page: React.FC<PageProps> = ({ externalTag, pages, error }) => {
         <meta name="description" content={externalTag} />
       </Head>
       <h1 className="text-center text-4xl sm:text-6xl lg:text-7xl leading-none font-black tracking-tight text-gray-900 pb-4 mt-10 sm:mt-12 mb-4">
-        <span className="text-transparent bg-clip-text decoration-clone px-2 bg-gradient-to-r from-red-400 to-pink-700">
-          Blog
-        </span>
+        Blog
       </h1>
-      <div className="max-w-6xl mx-auto px-8 pt-16 flex space-x-24">
+      <div className="max-w-6xl mx-auto px-8 py-16 flex space-x-24">
         <section className="flex-2 space-y-8">
           <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">{externalTag}</h2>
           {pages?.map((post) => (
@@ -47,25 +39,22 @@ const Page: React.FC<PageProps> = ({ externalTag, pages, error }) => {
             <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">Tags</h2>
             <div className="flex flex-wrap items-center">
               {/* T A G  */}
-              {tags
+              {allTags
                 ?.filter((tag) => tag !== 'popular')
                 .map((tag) => (
-                  <a
-                    href={`/tag/${tag}`}
-                    key={tag}
-                    className="text-sm font-bold relative isolate rounded-md px-2 py-1 group cursor-pointer flex justify-center mr-2 mb-2"
-                  >
-                    <div
+                  <Link href={tag === externalTag ? '/' : `/tag/${tag}`} key={tag}>
+                    <a
                       className={classNames(
-                        'transform duration-200 group-hover:scale-105 absolute inset-0 rounded-md px-2 py-1 border border-solid',
+                        'inline-block text-sm font-bold mr-2 mb-2 transform duration-200  rounded-md px-2 py-1',
                         tag === externalTag
-                          ? ' bg-blue-100 group-hover:bg-blue-200 border-blue-200'
-                          : 'bg-cyan-100 group-hover:bg-cyan-200 border-cyan-200'
+                          ? 'text-blue-800 bg-blue-100 hover:bg-blue-200 hover:text-blue-900'
+                          : 'text-cyan-800 bg-cyan-100 hover:bg-cyan-200 hover:text-cyan-900'
                       )}
-                      style={{ zIndex: -1 }}
-                    />
-                    {tag}
-                  </a>
+                    >
+                      <div className="" style={{ zIndex: -1 }} />
+                      {tag}
+                    </a>
+                  </Link>
                 ))}
               {/*  */}
             </div>
@@ -73,23 +62,20 @@ const Page: React.FC<PageProps> = ({ externalTag, pages, error }) => {
           <div>
             <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">Most Popular</h2>
             <ul>
-              {pages
-                ?.filter((post) => post.tags.find((tag) => tag === 'popular'))
-                .map((post) => (
-                  <li key={post.id} className="">
-                    <a href={post.slug} className="flex space-x-2 items-center group cursor-pointer">
-                      <span className="transform duration-300 -translate-x-1 group-hover:translate-x-1">
-                        <FaArrowRight className="text-pink-600 group-hover:text-pink-700" />
-                      </span>
-                      <div className="flex-1 text-gray-900 font-bold text-lg leading-10 capitalize">{post.name}</div>
+              {populars?.map((post) => (
+                <li key={post.id}>
+                  <Link href={`/${post.slug}`}>
+                    <a className="text-gray-900 hover:text-cyan-600 font-bold text-lg leading-10 transition-colors">
+                      {post.name}
                     </a>
-                  </li>
-                ))}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </section>
       </div>
-      {error === 'NOPAGE' && <ErrorNoPage />}
+      {error === 'NOKEYS' && <ErrorNoPage />}
     </Layout>
   )
 }
@@ -100,10 +86,26 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
   const { tag } = context.params
   try {
+    const { data } = await Axios.get('https://api.reactbricks.com/v2/admin/tags', {
+      headers: {
+        authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJBRE1JTiJdLCJ1c2VyIjp7InVzZXJJZCI6IjFiMDliMTc2LTkxZWItNDhkYS1iNmMwLWIwZDk5ZTU3NTRhNCIsImFwcElkIjoiYWU2ZWJhYjMtYzVkNS00MGM1LWJmMjUtZmFlNjMwZTdiZjYxIiwiYWNjb3VudElkIjoiOWIyYmJjZDgtMmIxMS00ODBjLWE5ZjgtMTc5MGQxODgxOTI1IiwiZW1haWwiOiJmMkBmMi5uZXQiLCJyZWFkT25seSI6ZmFsc2UsImNhbkNyZWF0ZVBhZ2UiOnRydWUsImNhbkRlbGV0ZVBhZ2UiOnRydWUsImNhbkRlcGxveSI6dHJ1ZSwiY2FuRGVwbG95U3RhZ2luZyI6dHJ1ZSwiaXNWZXJpZmllZCI6dHJ1ZX0sImlhdCI6MTYzOTc1NzAxOCwiZXhwIjoxNjM5ODQzNDE4fQ.7rmbWCgiYIqe4xXImDCq5ZsAZN1JucmNXAEeagIwMaU`,
+      },
+    })
+
+    data.sort(function (a, b) {
+      if (a < b) {
+        return -1
+      }
+      if (a > b) {
+        return 1
+      }
+      return 0
+    })
     const pages = await fetchPages(config.apiKey, { tag: tag.toString() })
-    return { props: { pages, externalTag: tag } }
+    const populars = await fetchPages(config.apiKey, { type: 'blog', tag: 'popular' })
+    return { props: { pages, externalTag: tag, populars, allTags: data } }
   } catch {
-    return { props: { error: 'NOPAGE' } }
+    return { props: {} }
   }
 }
 
@@ -112,20 +114,15 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
     return { paths: [], fallback: false }
   }
 
-  const allPages = await fetchPages(config.apiKey)
+  const { data } = await Axios.get('https://api.reactbricks.com/v2/admin/tags', {
+    headers: {
+      authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJBRE1JTiJdLCJ1c2VyIjp7InVzZXJJZCI6IjFiMDliMTc2LTkxZWItNDhkYS1iNmMwLWIwZDk5ZTU3NTRhNCIsImFwcElkIjoiYWU2ZWJhYjMtYzVkNS00MGM1LWJmMjUtZmFlNjMwZTdiZjYxIiwiYWNjb3VudElkIjoiOWIyYmJjZDgtMmIxMS00ODBjLWE5ZjgtMTc5MGQxODgxOTI1IiwiZW1haWwiOiJmMkBmMi5uZXQiLCJyZWFkT25seSI6ZmFsc2UsImNhbkNyZWF0ZVBhZ2UiOnRydWUsImNhbkRlbGV0ZVBhZ2UiOnRydWUsImNhbkRlcGxveSI6dHJ1ZSwiY2FuRGVwbG95U3RhZ2luZyI6dHJ1ZSwiaXNWZXJpZmllZCI6dHJ1ZX0sImlhdCI6MTYzOTc1NzAxOCwiZXhwIjoxNjM5ODQzNDE4fQ.7rmbWCgiYIqe4xXImDCq5ZsAZN1JucmNXAEeagIwMaU`,
+    },
+  })
 
-  const paths = allPages
-    .map((page) =>
-      page.translations
-        .filter((translation) => context.locales.indexOf(translation.language) > -1)
-        .map((translation) => ({
-          params: { slug: translation.slug },
-          locale: translation.language,
-        }))
-    )
-    .flat()
+  const paths = data.map((tag) => `/tag/${tag}`)
 
-  return { paths: ['/tag/react'], fallback: false }
+  return { paths, fallback: false }
 }
 
 export default Page
