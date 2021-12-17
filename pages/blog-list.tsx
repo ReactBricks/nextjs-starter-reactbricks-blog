@@ -59,7 +59,9 @@ const BlogList: React.FC<HomeProps> = ({ posts, page, error }) => {
         <section className="flex-2 space-y-8">
           <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">Heading</h2>
           {posts
-            ?.filter((post) => post.tags.find((tag) => (typeof filter === 'boolean' ? filter : tag === filter)))
+            ?.filter((post) =>
+              post.tags.find((tag) => (typeof filter === 'boolean' ? filter : tag === filter))
+            )
             .map((post) => (
               <BlogListItem
                 key={post.id}
@@ -75,7 +77,7 @@ const BlogList: React.FC<HomeProps> = ({ posts, page, error }) => {
             <div className="flex flex-wrap items-center">
               {/* T A G  */}
               {tags
-                ?.filter((tag) => tag !== 'popoular')
+                ?.filter((tag) => tag !== 'popular')
                 .map((tag) => (
                   <div
                     key={tag}
@@ -103,10 +105,10 @@ const BlogList: React.FC<HomeProps> = ({ posts, page, error }) => {
             </div>
           </div>
           <div>
-            <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">Most Popoular</h2>
+            <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">Most Popular</h2>
             <ul>
               {posts
-                ?.filter((post) => post.tags.find((tag) => tag === 'popoular'))
+                ?.filter((post) => post.tags.find((tag) => tag === 'popular'))
                 .map((post) => (
                   <li key={post.id} className="">
                     <a
