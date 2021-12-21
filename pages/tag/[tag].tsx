@@ -1,9 +1,8 @@
 import classNames from 'classnames'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import Axios from 'axios'
 import Head from 'next/head'
 import Link from 'next/link'
-import { fetchPages, types } from 'react-bricks/frontend'
+import { fetchPages, fetchTags, types } from 'react-bricks/frontend'
 import BlogListItem from '../../components/BlogListItem'
 import ErrorNoPage from '../../components/errorNoPage'
 import Layout from '../../components/layout'
@@ -86,24 +85,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
   const { tag } = context.params
   try {
-    const { data } = await Axios.get('https://api.reactbricks.com/v2/admin/tags', {
-      headers: {
-        authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJBRE1JTiJdLCJ1c2VyIjp7InVzZXJJZCI6IjFiMDliMTc2LTkxZWItNDhkYS1iNmMwLWIwZDk5ZTU3NTRhNCIsImFwcElkIjoiYWU2ZWJhYjMtYzVkNS00MGM1LWJmMjUtZmFlNjMwZTdiZjYxIiwiYWNjb3VudElkIjoiOWIyYmJjZDgtMmIxMS00ODBjLWE5ZjgtMTc5MGQxODgxOTI1IiwiZW1haWwiOiJmMkBmMi5uZXQiLCJyZWFkT25seSI6ZmFsc2UsImNhbkNyZWF0ZVBhZ2UiOnRydWUsImNhbkRlbGV0ZVBhZ2UiOnRydWUsImNhbkRlcGxveSI6dHJ1ZSwiY2FuRGVwbG95U3RhZ2luZyI6dHJ1ZSwiaXNWZXJpZmllZCI6dHJ1ZX0sImlhdCI6MTYzOTc1NzAxOCwiZXhwIjoxNjM5ODQzNDE4fQ.7rmbWCgiYIqe4xXImDCq5ZsAZN1JucmNXAEeagIwMaU`,
-      },
-    })
-
-    data.sort(function (a, b) {
-      if (a < b) {
-        return -1
-      }
-      if (a > b) {
-        return 1
-      }
-      return 0
-    })
+    const { items } = await fetchTags(process.env.API_KEY)
+    items.sort()
     const pages = await fetchPages(config.apiKey, { tag: tag.toString() })
     const populars = await fetchPages(config.apiKey, { type: 'blog', tag: 'popular' })
-    return { props: { pages, externalTag: tag, populars, allTags: data } }
+    return { props: { pages, externalTag: tag, populars, allTags: items } }
   } catch {
     return { props: {} }
   }
@@ -114,13 +100,9 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
     return { paths: [], fallback: false }
   }
 
-  const { data } = await Axios.get('https://api.reactbricks.com/v2/admin/tags', {
-    headers: {
-      authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJBRE1JTiJdLCJ1c2VyIjp7InVzZXJJZCI6IjFiMDliMTc2LTkxZWItNDhkYS1iNmMwLWIwZDk5ZTU3NTRhNCIsImFwcElkIjoiYWU2ZWJhYjMtYzVkNS00MGM1LWJmMjUtZmFlNjMwZTdiZjYxIiwiYWNjb3VudElkIjoiOWIyYmJjZDgtMmIxMS00ODBjLWE5ZjgtMTc5MGQxODgxOTI1IiwiZW1haWwiOiJmMkBmMi5uZXQiLCJyZWFkT25seSI6ZmFsc2UsImNhbkNyZWF0ZVBhZ2UiOnRydWUsImNhbkRlbGV0ZVBhZ2UiOnRydWUsImNhbkRlcGxveSI6dHJ1ZSwiY2FuRGVwbG95U3RhZ2luZyI6dHJ1ZSwiaXNWZXJpZmllZCI6dHJ1ZX0sImlhdCI6MTYzOTc1NzAxOCwiZXhwIjoxNjM5ODQzNDE4fQ.7rmbWCgiYIqe4xXImDCq5ZsAZN1JucmNXAEeagIwMaU`,
-    },
-  })
+  const { items } = await fetchTags(process.env.API_KEY)
 
-  const paths = data.map((tag) => `/tag/${tag}`)
+  const paths = items.map((tag) => `/tag/${tag}`)
 
   return { paths, fallback: false }
 }

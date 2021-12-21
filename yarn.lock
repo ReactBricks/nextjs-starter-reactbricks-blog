@@ -371,13 +371,6 @@ axios@^0.23.0:
   dependencies:
     follow-redirects "^1.14.4"
 
-axios@^0.24.0:
-  version "0.24.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
-  integrity sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
-  dependencies:
-    follow-redirects "^1.14.4"
-
 balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
@@ -2275,10 +2268,10 @@ react-bricks-ui@^0.3.2:
     react-leaflet "^3.2.1"
     react-simple-code-editor "^0.11.0"
 
-react-bricks@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/react-bricks/-/react-bricks-3.2.0.tgz#1b3719e7a90dd8c7076704c80d62f53f0d246341"
-  integrity sha512-wjH4k1uDt2AiGRmfm0qY2kDIsTjY2TfjwE4H92AMSE4c9uCiFY9yXFTS21TXAEUPz3NtTN5NggLVXFYQ8UaSrA==
+react-bricks@^3.2.5:
+  version "3.2.5"
+  resolved "https://registry.yarnpkg.com/react-bricks/-/react-bricks-3.2.5.tgz#93ff04b42247c4e6a17267c72acc10ba99160323"
+  integrity sha512-kLHdDZPT63Kp4hglvYv9pkybydjjIoyGTuZl+iFNKV5W35KMPqZ7P/0ReVTlZyN3qgB9FUjAPph/yOB16aGx0w==
   dependencies:
     "@tippyjs/react" "^4.2.5"
     axios "^0.23.0"

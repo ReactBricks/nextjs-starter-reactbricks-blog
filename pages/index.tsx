@@ -1,15 +1,11 @@
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
-import { useContext, useState } from 'react'
-import { cleanPage, fetchPage, fetchPages, ReactBricksContext, types } from 'react-bricks/frontend'
-import ErrorNoHomePage from '../components/errorNoHomePage'
-import ErrorNoKeys from '../components/errorNoKeys'
-
+import Link from 'next/link'
+import { fetchPages, fetchTags, types } from 'react-bricks/frontend'
 import BlogListItem from '../components/BlogListItem'
+import ErrorNoKeys from '../components/errorNoKeys'
 import Layout from '../components/layout'
 import config from '../react-bricks/config'
-import Link from 'next/link'
-import axios from 'axios'
 
 interface HomeProps {
   error: string
@@ -82,15 +78,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
     return { props: { error: 'NOKEYS' } }
   }
   try {
-    const { data } = await axios.get('https://api.reactbricks.com/v2/admin/tags', {
-      headers: {
-        authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJBRE1JTiJdLCJ1c2VyIjp7InVzZXJJZCI6IjFiMDliMTc2LTkxZWItNDhkYS1iNmMwLWIwZDk5ZTU3NTRhNCIsImFwcElkIjoiYWU2ZWJhYjMtYzVkNS00MGM1LWJmMjUtZmFlNjMwZTdiZjYxIiwiYWNjb3VudElkIjoiOWIyYmJjZDgtMmIxMS00ODBjLWE5ZjgtMTc5MGQxODgxOTI1IiwiZW1haWwiOiJmMkBmMi5uZXQiLCJyZWFkT25seSI6ZmFsc2UsImNhbkNyZWF0ZVBhZ2UiOnRydWUsImNhbkRlbGV0ZVBhZ2UiOnRydWUsImNhbkRlcGxveSI6dHJ1ZSwiY2FuRGVwbG95U3RhZ2luZyI6dHJ1ZSwiaXNWZXJpZmllZCI6dHJ1ZX0sImlhdCI6MTYzOTc1NzAxOCwiZXhwIjoxNjM5ODQzNDE4fQ.7rmbWCgiYIqe4xXImDCq5ZsAZN1JucmNXAEeagIwMaU`,
-      },
-    })
-    data.sort()
+    const { items } = await fetchTags(process.env.API_KEY)
 
+    items.sort()
     const posts = await fetchPages(process.env.API_KEY, { type: 'blog' })
-    return { props: { posts, tags: data } }
+
+    return { props: { posts, tags: items } }
   } catch {
     return { props: {} }
   }

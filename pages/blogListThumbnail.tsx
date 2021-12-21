@@ -1,17 +1,12 @@
-import React from 'react'
-// import Layout from '../components/layout'
-import PostThumbnail from '../components/PostThumbnail'
-
-import { useContext } from 'react'
-import { ReactBricksContext, PageViewer, fetchPage, cleanPage, types, fetchPages } from 'react-bricks/frontend'
-import Head from 'next/head'
-import { GetStaticProps } from 'next'
-
-import config from '../react-bricks/config'
-import Layout from '../components/layout'
-import ErrorNoKeys from '../components/errorNoKeys'
-import ErrorNoHomePage from '../components/errorNoHomePage'
 import dayjs from 'dayjs'
+import { GetStaticProps } from 'next'
+import Head from 'next/head'
+import React from 'react'
+import { fetchPages, types } from 'react-bricks/frontend'
+import ErrorNoKeys from '../components/errorNoKeys'
+import Layout from '../components/layout'
+import PostThumbnail from '../components/PostThumbnail'
+import config from '../react-bricks/config'
 
 interface BlogListThumbnailsProps {
   error: string
@@ -33,6 +28,7 @@ const BlogListThumbnails: React.FC<BlogListThumbnailsProps> = ({ posts, error })
         <div className="py-10 flex flex-wrap">
           {posts?.map((post) => (
             <PostThumbnail
+              key={post.id}
               href={post.slug}
               title={post.name}
               description={post.meta.description}
