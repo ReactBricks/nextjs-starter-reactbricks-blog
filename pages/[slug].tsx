@@ -1,18 +1,12 @@
 import { useContext } from 'react'
-import {
-  ReactBricksContext,
-  PageViewer,
-  fetchPage,
-  fetchPages,
-  cleanPage,
-  types,
-} from 'react-bricks/frontend'
+import { ReactBricksContext, PageViewer, fetchPage, fetchPages, cleanPage, types } from 'react-bricks/frontend'
 import Head from 'next/head'
 import { GetStaticProps, GetStaticPaths } from 'next'
 
 import config from '../react-bricks/config'
 import Layout from '../components/layout'
 import ErrorNoPage from '../components/errorNoPage'
+import ErrorNoKeys from '../components/errorNoKeys'
 
 interface PageProps {
   page: types.Page
@@ -36,6 +30,7 @@ const Page: React.FC<PageProps> = ({ page, error }) => {
           <PageViewer page={pageOk} />
         </>
       )}
+      {error === 'NOKEYS' && <ErrorNoKeys />}
       {error === 'NOPAGE' && <ErrorNoPage />}
     </Layout>
   )
@@ -64,9 +59,7 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
   const paths = allPages
     .map((page) =>
       page.translations
-        .filter(
-          (translation) => context.locales.indexOf(translation.language) > -1
-        )
+        .filter((translation) => context.locales.indexOf(translation.language) > -1)
         .map((translation) => ({
           params: { slug: translation.slug },
           locale: translation.language,

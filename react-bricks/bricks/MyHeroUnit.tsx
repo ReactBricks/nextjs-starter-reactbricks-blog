@@ -40,6 +40,7 @@ const MyHeroUnit: types.Brick<HeroUnitProps> = ({ padding }) => {
           propName="title"
         />
         <RichText
+        
           renderBlock={(props) => (
             <p className="text-xl text-center leading-relaxed text-gray-700 dark:text-gray-100">
               {props.children}
