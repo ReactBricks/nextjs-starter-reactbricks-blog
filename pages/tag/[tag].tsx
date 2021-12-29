@@ -9,27 +9,27 @@ import Layout from '../../components/layout'
 import config from '../../react-bricks/config'
 
 interface PageProps {
-  pages: types.Page[]
-  populars: types.Page[]
+  pagesByTag: types.Page[]
+  popularPosts: types.Page[]
   error: string
-  externalTag: string
+  filterTag: string
   allTags: string[]
 }
 
-const Page: React.FC<PageProps> = ({ externalTag, pages, populars, allTags, error }) => {
+const Page: React.FC<PageProps> = ({ filterTag, pagesByTag, popularPosts, allTags, error }) => {
   return (
     <Layout>
       <Head>
-        <title>{externalTag}</title>
-        <meta name="description" content={externalTag} />
+        <title>{filterTag}</title>
+        <meta name="description" content={filterTag} />
       </Head>
       <h1 className="text-center text-4xl sm:text-6xl lg:text-7xl leading-none font-black tracking-tight text-gray-900 pb-4 mt-10 sm:mt-12 mb-4">
         Blog
       </h1>
       <div className="max-w-6xl mx-auto px-8 py-16 flex space-x-24">
         <section className="flex-2 space-y-8">
-          <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">{externalTag}</h2>
-          {pages?.map((post) => (
+          <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">{filterTag}</h2>
+          {pagesByTag?.map((post) => (
             <BlogListItem key={post.id} title={post.name} href={post.slug} content={post.meta.description} />
           ))}
         </section>
@@ -41,11 +41,11 @@ const Page: React.FC<PageProps> = ({ externalTag, pages, populars, allTags, erro
               {allTags
                 ?.filter((tag) => tag !== 'popular')
                 .map((tag) => (
-                  <Link href={tag === externalTag ? '/' : `/tag/${tag}`} key={tag}>
+                  <Link href={tag === filterTag ? '/' : `/tag/${tag}`} key={tag}>
                     <a
                       className={classNames(
                         'inline-block text-sm font-bold mr-2 mb-2 transform duration-200  rounded-md px-2 py-1',
-                        tag === externalTag
+                        tag === filterTag
                           ? 'text-blue-800 bg-blue-100 hover:bg-blue-200 hover:text-blue-900'
                           : 'text-cyan-800 bg-cyan-100 hover:bg-cyan-200 hover:text-cyan-900'
                       )}
@@ -61,7 +61,7 @@ const Page: React.FC<PageProps> = ({ externalTag, pages, populars, allTags, erro
           <div>
             <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">Most Popular</h2>
             <ul>
-              {populars?.map((post) => (
+              {popularPosts?.map((post) => (
                 <li key={post.id}>
                   <Link href={`/${post.slug}`}>
                     <a className="text-gray-900 hover:text-cyan-600 font-bold text-lg leading-10 transition-colors">
@@ -85,11 +85,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
   const { tag } = context.params
   try {
-    const { items } = await fetchTags(process.env.API_KEY)
-    items.sort()
-    const pages = await fetchPages(config.apiKey, { tag: tag.toString() })
-    const populars = await fetchPages(config.apiKey, { type: 'blog', tag: 'popular' })
-    return { props: { pages, externalTag: tag, populars, allTags: items } }
+    const { items: tags } = await fetchTags(process.env.API_KEY)
+    tags.sort()
+    const pagesByTag = await fetchPages(config.apiKey, { tag: tag.toString(), type: 'blog' })
+    const popularPosts = await fetchPages(config.apiKey, { type: 'blog', tag: 'popular' })
+    return { props: { pagesByTag, filterTag: tag, popularPosts, allTags: tags } }
   } catch {
     return { props: {} }
   }
@@ -100,9 +100,9 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
     return { paths: [], fallback: false }
   }
 
-  const { items } = await fetchTags(process.env.API_KEY)
+  const { items: tags } = await fetchTags(process.env.API_KEY)
 
-  const paths = items.map((tag) => `/tag/${tag}`)
+  const paths = tags.map((tag) => `/tag/${tag}`)
 
   return { paths, fallback: false }
 }

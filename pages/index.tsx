@@ -78,12 +78,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
     return { props: { error: 'NOKEYS' } }
   }
   try {
-    const { items } = await fetchTags(process.env.API_KEY)
+    const { items: tags } = await fetchTags(process.env.API_KEY)
 
-    items.sort()
+    tags.sort()
     const posts = await fetchPages(process.env.API_KEY, { type: 'blog' })
 
-    return { props: { posts, tags: items } }
+    return { props: { posts, tags } }
   } catch {
     return { props: {} }
   }
