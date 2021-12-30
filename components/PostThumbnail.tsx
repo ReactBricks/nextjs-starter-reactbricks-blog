@@ -5,7 +5,7 @@ import Image from 'next/image'
 // import useHover from './blog/hooks/useHover'
 import { FiArrowRight } from 'react-icons/fi'
 
-interface ArticleCardProps {
+interface PostThumbnailProps {
   href: string
   title: string
   description: string
@@ -13,7 +13,7 @@ interface ArticleCardProps {
   image: any
 }
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ href, title, description, date, image }) => {
+const PostThumbnail: React.FC<PostThumbnailProps> = ({ href, title, description, date, image }) => {
   return (
     <Link href={href}>
       <article className="w-1/2 mb-8 p-8 group cursor-pointer">
@@ -44,4 +44,4 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ href, title, description, dat
   )
 }
 
-export default ArticleCard
+export default PostThumbnail

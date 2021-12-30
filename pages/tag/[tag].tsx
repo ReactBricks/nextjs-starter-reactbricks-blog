@@ -30,7 +30,7 @@ const Page: React.FC<PageProps> = ({ filterTag, pagesByTag, popularPosts, allTag
         <section className="flex-2 space-y-8">
           <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">{filterTag}</h2>
           {pagesByTag?.map((post) => (
-            <BlogListItem key={post.id} title={post.name} href={post.slug} content={post.meta.description} />
+            <BlogListItem key={post.id} title={post.name} href={`/posts/${post.slug}`} content={post.meta.description} />
           ))}
         </section>
         <section className="flex-1 space-y-16">
@@ -63,7 +63,7 @@ const Page: React.FC<PageProps> = ({ filterTag, pagesByTag, popularPosts, allTag
             <ul>
               {popularPosts?.map((post) => (
                 <li key={post.id}>
-                  <Link href={`/${post.slug}`}>
+                  <Link href={`/posts/${post.slug}`}>
                     <a className="text-gray-900 hover:text-cyan-600 font-bold text-lg leading-10 transition-colors">
                       {post.name}
                     </a>
@@ -87,8 +87,18 @@ export const getStaticProps: GetStaticProps = async (context) => {
   try {
     const { items: tags } = await fetchTags(process.env.API_KEY)
     tags.sort()
-    const pagesByTag = await fetchPages(config.apiKey, { tag: tag.toString(), type: 'blog' })
-    const popularPosts = await fetchPages(config.apiKey, { type: 'blog', tag: 'popular' })
+
+    const pagesByTag = await fetchPages(config.apiKey, { 
+      tag: tag.toString(), 
+      type: 'blog',
+      pageSize: 1000,
+      sort: '-publishedAt',
+    })
+    const popularPosts = await fetchPages(config.apiKey, { 
+      type: 'blog', 
+      tag: 'popular',
+      sort: '-publishedAt',
+    })
     return { props: { pagesByTag, filterTag: tag, popularPosts, allTags: tags } }
   } catch {
     return { props: {} }

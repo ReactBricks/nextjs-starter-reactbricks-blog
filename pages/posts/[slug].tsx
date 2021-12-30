@@ -3,10 +3,10 @@ import { ReactBricksContext, PageViewer, fetchPage, fetchPages, cleanPage, types
 import Head from 'next/head'
 import { GetStaticProps, GetStaticPaths } from 'next'
 
-import config from '../react-bricks/config'
-import Layout from '../components/layout'
-import ErrorNoPage from '../components/errorNoPage'
-import ErrorNoKeys from '../components/errorNoKeys'
+import config from '../../react-bricks/config'
+import Layout from '../../components/layout'
+import ErrorNoPage from '../../components/errorNoPage'
+import ErrorNoKeys from '../../components/errorNoKeys'
 
 interface PageProps {
   page: types.Page
@@ -55,7 +55,7 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
   }
 
   const allPages = await fetchPages(config.apiKey, {
-    type: 'page',
+    type: 'blog',
     pageSize: 1000,
     sort: '-publishedAt',
   })

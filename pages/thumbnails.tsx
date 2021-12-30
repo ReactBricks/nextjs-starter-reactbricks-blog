@@ -29,7 +29,7 @@ const BlogListThumbnails: React.FC<BlogListThumbnailsProps> = ({ posts, error })
           {posts?.map((post) => (
             <PostThumbnail
               key={post.id}
-              href={post.slug}
+              href={`/posts/${post.slug}`}
               title={post.name}
               description={post.meta.description}
               date={dayjs(post.publishedAt).format('DD/MM/YYYY')}
@@ -52,7 +52,11 @@ export const getStaticProps: GetStaticProps = async () => {
     return { props: { error: 'NOKEYS' } }
   }
   try {
-    const posts = await fetchPages(process.env.API_KEY, { type: 'blog' })
+    const posts = await fetchPages(process.env.API_KEY, { 
+      type: 'blog',
+      pageSize: 1000,
+      sort: '-publishedAt',
+    })
     return { props: { posts } }
   } catch {
     return { props: {} }
