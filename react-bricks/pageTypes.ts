@@ -15,14 +15,24 @@ const pageTypes: types.IPageType[] = [
       'quote',
       'social-embed',
       'code-block',
-      'twitter-light',
+      'tweet-light',
     ],
   },
   {
     name: 'blog',
     pluralName: 'Blog',
     getDefaultContent: () => [],
-    excludedBlockTypes: ['hero-unit'],
+    allowedBlockTypes: [
+      'title',
+      'paragraph',
+      'video',
+      'image',
+      'quote',
+      'social-embed',
+      'code-block',
+      'tweet',
+      'tweet-light',
+    ],
   },
 ]
 

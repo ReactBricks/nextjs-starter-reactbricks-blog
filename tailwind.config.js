@@ -16,7 +16,10 @@ module.exports = {
     },
     extend: {
       colors: {
-        azure: colors.sky,
+        sky: colors.sky,
+        orange: colors.orange,
+        green: colors.lime,
+        cyan: colors.cyan,
         pink: {
           100: '#ffebef',
           200: '#ffd6e0',
@@ -28,9 +31,14 @@ module.exports = {
           800: '#8f2468',
           900: '#691f53',
         },
-        orange: colors.orange,
-        green: colors.lime,
-        cyan: colors.cyan,
+        twitter: {
+          50: '#d9d9d9',
+          500: '#1d9bf0',
+          600: '#1a8cd8',
+          900: '#15181c',
+          'dark-border': '#2f3336',
+          dark: '#000000',
+        },
       },
       gradientColorStops: {
         ocean1: '#007cf0',
@@ -39,9 +47,6 @@ module.exports = {
         violet2: '#ff0080',
         sun1: '#ff4d4d',
         sun2: '#f9cb28',
-      },
-      padding: {
-        '1/10': '10%',
       },
       fontFamily: {
         content: ['Nunito Sans', ...defaultTheme.fontFamily.sans],
@@ -56,5 +61,5 @@ module.exports = {
       translate: ['group-hover'],
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/aspect-ratio')],
 }
