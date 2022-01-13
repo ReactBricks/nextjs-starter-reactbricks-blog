@@ -1,13 +1,13 @@
 import React from 'react'
 import Link from 'next/link'
 
-interface BlogListItemProps {
+interface PostListItemProps {
   title: string
   href: string
   content: string
 }
 
-const BlogListItem: React.FC<BlogListItemProps> = ({ title, href, content }) => {
+const PostListItem: React.FC<PostListItemProps> = ({ title, href, content }) => {
   return (
     <Link href={href}>
       <a className="flex-1 block group py-4 text-gray-900 hover:bg-gray-50 transition-colors duration-300 p-6 -m-6 rounded">
@@ -22,4 +22,4 @@ const BlogListItem: React.FC<BlogListItemProps> = ({ title, href, content }) => 
   )
 }
 
-export default BlogListItem
+export default PostListItem
