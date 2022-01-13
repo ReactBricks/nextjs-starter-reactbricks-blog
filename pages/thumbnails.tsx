@@ -17,7 +17,7 @@ const BlogListThumbnails: React.FC<BlogListThumbnailsProps> = ({ posts, error })
   return (
     <Layout>
       <Head>
-        <title>Blog List Thumbnails</title>
+        <title>Post List Thumbnails</title>
         <meta name="description" content="React Bricks blog starter" />
       </Head>
 

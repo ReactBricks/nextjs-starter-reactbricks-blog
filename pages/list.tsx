@@ -17,7 +17,7 @@ const BlogList: React.FC<HomeProps> = ({ tags, posts, error }) => {
   return (
     <Layout>
       <Head>
-        <title>Blog List</title>
+        <title>Post List</title>
         <meta name="description" content="React Bricks blog starter" />
       </Head>
 
