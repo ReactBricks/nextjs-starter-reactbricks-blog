@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+# css
+/css/tailwind.css
+
 # next.js
 /.next/
 /out/

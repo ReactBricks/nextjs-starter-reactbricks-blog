@@ -27,10 +27,15 @@ const Page: React.FC<PageProps> = ({ filterTag, pagesByTag, popularPosts, allTag
         Blog
       </h1>
       <div className="max-w-6xl mx-auto px-8 py-16 flex space-x-24">
-        <section className="flex-2 space-y-8">
+        <section className="flex-[2] space-y-8">
           <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">{filterTag}</h2>
           {pagesByTag?.map((post) => (
-            <BlogListItem key={post.id} title={post.name} href={`/posts/${post.slug}`} content={post.meta.description} />
+            <BlogListItem
+              key={post.id}
+              title={post.name}
+              href={`/posts/${post.slug}`}
+              content={post.meta.description}
+            />
           ))}
         </section>
         <section className="flex-1 space-y-16">
@@ -88,14 +93,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const { items: tags } = await fetchTags(process.env.API_KEY)
     tags.sort()
 
-    const pagesByTag = await fetchPages(config.apiKey, { 
-      tag: tag.toString(), 
+    const pagesByTag = await fetchPages(config.apiKey, {
+      tag: tag.toString(),
       type: 'blog',
       pageSize: 1000,
       sort: '-publishedAt',
     })
-    const popularPosts = await fetchPages(config.apiKey, { 
-      type: 'blog', 
+    const popularPosts = await fetchPages(config.apiKey, {
+      type: 'blog',
       tag: 'popular',
       sort: '-publishedAt',
     })

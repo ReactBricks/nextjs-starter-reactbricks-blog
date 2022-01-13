@@ -25,10 +25,15 @@ const BlogList: React.FC<HomeProps> = ({ tags, posts, error }) => {
         Blog
       </h1>
       <div className="max-w-6xl mx-auto px-8 py-16 flex space-x-24">
-        <section className="flex-2 space-y-8">
+        <section className="flex-[2] space-y-8">
           <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">Recently published</h2>
           {posts?.map((post) => (
-            <BlogListItem key={post.id} title={post.name} href={`/posts/${post.slug}`} content={post.meta.description} />
+            <BlogListItem
+              key={post.id}
+              title={post.name}
+              href={`/posts/${post.slug}`}
+              content={post.meta.description}
+            />
           ))}
         </section>
         <section className="flex-1 space-y-16">
@@ -81,7 +86,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const { items: tags } = await fetchTags(process.env.API_KEY)
     tags.sort()
 
-    const posts = await fetchPages(process.env.API_KEY, { 
+    const posts = await fetchPages(process.env.API_KEY, {
       type: 'blog',
       pageSize: 1000,
       sort: '-publishedAt',
