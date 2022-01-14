@@ -15,7 +15,7 @@ interface PostThumbnailProps {
 
 const PostThumbnail: React.FC<PostThumbnailProps> = ({ href, title, description, date, image }) => {
   return (
-    <Link href={href}>
+    <Link href={`blog/posts/${href}`}>
       <a className="w-1/2 mb-8 p-8 group">
         <div className="relative">
           <img src={image} className="block w-full h-60 object-cover object-center transition-transform rounded" />

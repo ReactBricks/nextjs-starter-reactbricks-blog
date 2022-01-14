@@ -2,7 +2,7 @@ import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { fetchPages, fetchTags, types } from 'react-bricks/frontend'
-import BlogListItem from '../../components/PostListItem'
+import PostListItem from '../../components/PostListItem'
 import ErrorNoKeys from '../../components/errorNoKeys'
 import Layout from '../../components/layout'
 import config from '../../react-bricks/config'
@@ -28,12 +28,7 @@ const BlogList: React.FC<HomeProps> = ({ tags, posts, error }) => {
         <section className="flex-[2] space-y-8">
           <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">Recently published</h2>
           {posts?.map((post) => (
-            <BlogListItem
-              key={post.id}
-              title={post.name}
-              href={`/blog/posts/${post.slug}`}
-              content={post.meta.description}
-            />
+            <PostListItem key={post.id} title={post.name} href={post.slug} content={post.meta.description} />
           ))}
         </section>
         <section className="flex-1 space-y-16">

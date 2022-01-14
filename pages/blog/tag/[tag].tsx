@@ -30,12 +30,7 @@ const Page: React.FC<PageProps> = ({ filterTag, pagesByTag, popularPosts, allTag
         <section className="flex-[2] space-y-8">
           <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">{filterTag}</h2>
           {pagesByTag?.map((post) => (
-            <PostListItem
-              key={post.id}
-              title={post.name}
-              href={`/blog/posts/${post.slug}`}
-              content={post.meta.description}
-            />
+            <PostListItem key={post.id} title={post.name} href={post.slug} content={post.meta.description} />
           ))}
         </section>
         <section className="flex-1 space-y-16">

@@ -29,7 +29,7 @@ const BlogListThumbnails: React.FC<BlogListThumbnailsProps> = ({ posts, error })
           {posts?.map((post) => (
             <PostThumbnail
               key={post.id}
-              href={`/blog/posts/${post.slug}`}
+              href={post.slug}
               title={post.name}
               description={post.meta.description}
               date={dayjs(post.publishedAt).format('DD/MM/YYYY')}
