@@ -3,10 +3,10 @@ import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import React from 'react'
 import { fetchPages, types } from 'react-bricks/frontend'
-import ErrorNoKeys from '../components/errorNoKeys'
-import Layout from '../components/layout'
-import PostThumbnail from '../components/PostThumbnail'
-import config from '../react-bricks/config'
+import ErrorNoKeys from '../../components/errorNoKeys'
+import Layout from '../../components/layout'
+import PostThumbnail from '../../components/PostThumbnail'
+import config from '../../react-bricks/config'
 
 interface BlogListThumbnailsProps {
   error: string

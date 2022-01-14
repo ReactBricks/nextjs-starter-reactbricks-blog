@@ -3,10 +3,10 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { fetchPages, fetchTags, types } from 'react-bricks/frontend'
-import BlogListItem from '../../components/PostListItem'
-import ErrorNoPage from '../../components/errorNoPage'
-import Layout from '../../components/layout'
-import config from '../../react-bricks/config'
+import PostListItem from '../../../components/PostListItem'
+import ErrorNoPage from '../../../components/errorNoPage'
+import Layout from '../../../components/layout'
+import config from '../../../react-bricks/config'
 
 interface PageProps {
   pagesByTag: types.Page[]
@@ -30,10 +30,10 @@ const Page: React.FC<PageProps> = ({ filterTag, pagesByTag, popularPosts, allTag
         <section className="flex-[2] space-y-8">
           <h2 className="text-pink-500 uppercase mb-8 tracking-widest font-bold">{filterTag}</h2>
           {pagesByTag?.map((post) => (
-            <BlogListItem
+            <PostListItem
               key={post.id}
               title={post.name}
-              href={`/posts/${post.slug}`}
+              href={`/blog/posts/${post.slug}`}
               content={post.meta.description}
             />
           ))}
@@ -46,7 +46,7 @@ const Page: React.FC<PageProps> = ({ filterTag, pagesByTag, popularPosts, allTag
               {allTags
                 ?.filter((tag) => tag !== 'popular')
                 .map((tag) => (
-                  <Link href={tag === filterTag ? '/' : `/tag/${tag}`} key={tag}>
+                  <Link href={tag === filterTag ? '/blog/list' : `/blog/tag/${tag}`} key={tag}>
                     <a
                       className={classNames(
                         'inline-block text-sm font-bold mr-2 mb-2 transform duration-200  rounded-md px-2 py-1',
@@ -68,7 +68,7 @@ const Page: React.FC<PageProps> = ({ filterTag, pagesByTag, popularPosts, allTag
             <ul>
               {popularPosts?.map((post) => (
                 <li key={post.id}>
-                  <Link href={`/posts/${post.slug}`}>
+                  <Link href={`/blog/posts/${post.slug}`}>
                     <a className="text-gray-900 hover:text-cyan-600 font-bold text-lg leading-10 transition-colors">
                       {post.name}
                     </a>
@@ -117,7 +117,7 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
 
   const { items: tags } = await fetchTags(process.env.API_KEY)
 
-  const paths = tags.map((tag) => `/tag/${tag}`)
+  const paths = tags.map((tag) => `/blog/tag/${tag}`)
 
   return { paths, fallback: false }
 }

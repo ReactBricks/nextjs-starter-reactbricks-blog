@@ -10,10 +10,10 @@ const Header: React.FC = () => (
             <img src="/react-bricks-logo.svg" className="w-48" alt="React Bricks" />
           </a>
           <div className="sm:ml-8 flex space-x-5 text-center">
-            <Link href="/list">
+            <Link href="/blog/list">
               <a className="text-gray-500 hover:text-pink-700">Post List</a>
             </Link>
-            <Link href="/thumbnails">
+            <Link href="/blog/thumbnails">
               <a className="text-gray-500 hover:text-pink-700">Post Thumbnails</a>
             </Link>
           </div>

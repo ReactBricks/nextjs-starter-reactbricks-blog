@@ -2,10 +2,10 @@ import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { fetchPages, fetchTags, types } from 'react-bricks/frontend'
-import BlogListItem from '../components/PostListItem'
-import ErrorNoKeys from '../components/errorNoKeys'
-import Layout from '../components/layout'
-import config from '../react-bricks/config'
+import BlogListItem from '../../components/PostListItem'
+import ErrorNoKeys from '../../components/errorNoKeys'
+import Layout from '../../components/layout'
+import config from '../../react-bricks/config'
 
 interface HomeProps {
   error: string
@@ -31,7 +31,7 @@ const BlogList: React.FC<HomeProps> = ({ tags, posts, error }) => {
             <BlogListItem
               key={post.id}
               title={post.name}
-              href={`/posts/${post.slug}`}
+              href={`/blog/posts/${post.slug}`}
               content={post.meta.description}
             />
           ))}
@@ -44,9 +44,8 @@ const BlogList: React.FC<HomeProps> = ({ tags, posts, error }) => {
               {tags
                 ?.filter((tag) => tag !== 'popular')
                 .map((tag) => (
-                  <Link href={`/tag/${tag}`} key={tag}>
+                  <Link href={`/blog/tag/${tag}`} key={tag}>
                     <a className="inline-block text-sm font-bold mr-2 mb-2 transform duration-200 text-cyan-800 bg-cyan-100 hover:bg-cyan-200 hover:text-cyan-900 rounded-md px-2 py-1">
-                      <div className="" style={{ zIndex: -1 }} />
                       {tag}
                     </a>
                   </Link>
@@ -61,12 +60,11 @@ const BlogList: React.FC<HomeProps> = ({ tags, posts, error }) => {
                 ?.filter((post) => post.tags.find((tag) => tag === 'popular'))
                 .map((post) => (
                   <li key={post.id}>
-                    <a
-                      href={post.slug}
-                      className="text-gray-900 hover:text-cyan-600 font-bold text-lg leading-10 transition-colors"
-                    >
-                      {post.name}
-                    </a>
+                    <Link href={`/blog/posts/${post.slug}`}>
+                      <a className="text-gray-900 hover:text-cyan-600 font-bold text-lg leading-10 transition-colors">
+                        {post.name}
+                      </a>
+                    </Link>
                   </li>
                 ))}
             </ul>
