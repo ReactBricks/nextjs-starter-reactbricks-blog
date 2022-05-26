@@ -9,7 +9,7 @@ interface PostListItemProps {
 
 const PostListItem: React.FC<PostListItemProps> = ({ title, href, content }) => {
   return (
-    <Link href={`blog/posts/${href}`}>
+    <Link href={`/blog/posts/${href}`}>
       <a className="flex-1 block group py-4 text-gray-900 hover:bg-gray-50 transition-colors duration-300 p-6 -m-6 rounded">
         <h3 className="font-bold text-2xl">{title}</h3>
         <p className="mt-4 leading-6 text-lg">{content}</p>
